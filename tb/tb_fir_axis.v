@@ -199,13 +199,13 @@ module tb_fir_axis;
         aresetn = 1'b0;
         s_axis_tvalid = 1'b0;
         s_axis_tlast  = 1'b0;
-        s_axis_tdata  = '0;
+        s_axis_tdata  = 0;
         m_axis_tready = 1'b1;
 
-        s_axi_awaddr = '0; s_axi_awvalid = 1'b0;
-        s_axi_wdata  = '0; s_axi_wvalid  = 1'b0;
-        s_axi_wstrb  = '0; s_axi_bready  = 1'b0;
-        s_axi_araddr = '0; s_axi_arvalid = 1'b0;
+        s_axi_awaddr = 0; s_axi_awvalid = 1'b0;
+        s_axi_wdata  = 0; s_axi_wvalid  = 1'b0;
+        s_axi_wstrb  = 0; s_axi_bready  = 1'b0;
+        s_axi_araddr = 0; s_axi_arvalid = 1'b0;
         s_axi_rready = 1'b0;
 
         repeat (10) @(posedge aclk);
