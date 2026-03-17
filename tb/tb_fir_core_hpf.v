@@ -47,12 +47,12 @@ module tb_fir_core_hpf;
 
     // Coefficient interface
     reg signed [COEFW-1:0] coef_array [0:NTAPS-1];
-    logic [NTAPS*COEFW-1:0] coef_flat;
+    reg [NTAPS*COEFW-1:0] coef_flat;
 
     // Helper variables
     real phase;
     real sine_val;
-    integer i;
+    integer i, k;
 
     // Peak amplitude tracking
     integer max_out_low_freq;
@@ -66,8 +66,8 @@ module tb_fir_core_hpf;
     // =========================================================================
     // 3. COEFFICIENT PACKING (ARRAY -> FLAT VECTOR)
     // =========================================================================
-    always_comb begin
-        for (int k = 0; k < NTAPS; k++) begin
+    always @* begin
+        for (k = 0; k < NTAPS; k = k + 1) begin
             coef_flat[k*COEFW +: COEFW] = coef_array[k];
         end
     end
@@ -113,7 +113,7 @@ module tb_fir_core_hpf;
         rstn = 1'b0;
         en   = 1'b0;
         clear_state = 1'b0;
-        din  = '0;
+        din  = 0;
 
         max_out_low_freq  = 0;
         max_out_high_freq = 0;
@@ -125,7 +125,7 @@ module tb_fir_core_hpf;
         // Symmetric HPF-like pattern
         // DC sum ≈ 0 -> DC rejection
         for (i = 0; i < NTAPS; i = i + 1)
-            coef_array[i] = '0;
+            coef_array[i] = 0;
 
         coef_array[0] = -16'sd1000;
         coef_array[1] = -16'sd2000;
