@@ -53,7 +53,7 @@ module tb_fir_core;
     reg signed [COEFW-1:0] coef_array [0:NTAPS-1];
 
     // Flattened coefficient vector connected to DUT
-    logic [NTAPS*COEFW-1:0] coef_flat;
+    reg [NTAPS*COEFW-1:0] coef_flat;
 
     // File handles
     integer fd_impulse;
@@ -61,7 +61,7 @@ module tb_fir_core;
     integer fd_dynamic;
 
     // Helper variables
-    integer i;
+    integer i, k;
     real phase;
     real sine_val;
 
@@ -69,8 +69,8 @@ module tb_fir_core;
     // 3. COEFFICIENT PACKING (ARRAY -> FLAT VECTOR)
     // =========================================================================
     // Index 0 of coef_flat corresponds to h[0]
-    always_comb begin
-        for (int k = 0; k < NTAPS; k++) begin
+    always @* begin
+        for (k = 0; k < NTAPS; k = k + 1) begin
             coef_flat[k*COEFW +: COEFW] = coef_array[k];
         end
     end
@@ -117,11 +117,11 @@ module tb_fir_core;
         rstn        = 1'b0;
         en          = 1'b0;
         clear_state = 1'b0;
-        din         = '0;
+        din         = 0;
 
         // Initialize coefficients to zero
         for (i = 0; i < NTAPS; i = i + 1)
-            coef_array[i] = '0;
+            coef_array[i] = 0;
 
         // Apply reset
         #(10 * CLK_PERIOD);
@@ -188,7 +188,7 @@ module tb_fir_core;
         $display("Saturation data written to fir_saturation_test.txt");
 
         // Clear internal state
-        din = '0;
+        din = 0;
         clear_state = 1'b1;
         @(posedge clk);
         clear_state = 1'b0;
@@ -200,7 +200,7 @@ module tb_fir_core;
 
         // Initial configuration: pass-through (gain = 1.0)
         for (i = 0; i < NTAPS; i = i + 1)
-            coef_array[i] = '0;
+            coef_array[i] = 0;
 
         coef_array[0] = 16'sd32767;
 
