@@ -86,14 +86,14 @@ See `docs/address_map.md` for detailed documentation.
 
 RTL verification is performed using dedicated testbenches:
 
-- `tb_fir_core.sv`  
+- `tb_fir_core.v`  
   Verifies FIR DSP behavior:
   - Impulse response
   - Step and sine response
   - Saturation behavior
   - Dynamic coefficient switching
 
-- `tb_fir_axis.sv`  
+- `tb_fir_axis.v`  
   Verifies system-level integration:
   - AXI-Lite register access
   - Runtime coefficient updates
