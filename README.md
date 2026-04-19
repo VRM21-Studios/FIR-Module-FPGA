@@ -167,20 +167,33 @@ Clock Constraint: 100 MHz
 
 ---
 
-### Notes
+## Hardware Validation (PYNQ)
 
-- The design uses a **fully parallel transposed FIR architecture**,  
-  where each tap is mapped to dedicated DSP resources.
+A minimal hardware validation was performed using a PYNQ-based DMA test.
 
-- This results in:
-  - **Minimum latency (1 cycle)**
-  - **Maximum throughput (1 sample per clock)**
+### Setup
+- Platform: AMD Kria KV260
+- Interface: AXI DMA (MM2S / S2MM)
+- Data Format: 32-bit interleaved stereo (Q1.15)
 
-- Trade-off:
-  - High DSP utilization due to full unrolling
-  - Suitable for **low-latency real-time audio DSP applications**
+### Procedure
+- Bitstream loaded on target
+- Test buffer (stereo ramp signal) generated in software
+- Data streamed to FPGA via AXI DMA
+- Output captured and compared against input
 
----
+### Example Log
+
+```
+[INFO] Loading bitstream...
+[INFO] Allocating buffers...
+[INFO] Generating test signal...
+[INFO] Starting DMA transfer...
+[INFO] Transfer complete.
+[INFO] Max difference: 0
+[PASS] Output matches input (pass-through / identity response)
+[INFO] Done.
+```
 
 ## Design Rationale (Summary)
 
